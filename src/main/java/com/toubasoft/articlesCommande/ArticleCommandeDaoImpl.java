@@ -36,7 +36,6 @@ public class ArticleCommandeDaoImpl implements ArticleCommandeDAO {
 
 	@Override
 	public List<ArticlesCommande> findByNameArticleOrFournisseur(String article, String fournisseur) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	 

@@ -52,6 +52,8 @@ public interface StocksBusiness {
 	 * @
 	 */
 	public Stocks retrieveStocksById(Long id);
+	
+	public Stocks retrieveStockArticle(String reference);
 
 	public void createStockCommande(Commandes commandes);
 

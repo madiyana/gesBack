@@ -48,7 +48,6 @@ public class ArticleCommandeBusinessImpl implements ArticleCommandeBusiness {
 
 	@Override
 	public List<ArticlesCommande> retrieveArticleCommandeByName(String article, String fournisseur) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

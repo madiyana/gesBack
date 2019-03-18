@@ -9,8 +9,11 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import com.toubasoft.dashboard.DBArticleDTO;
 import com.toubasoft.ligneArticle.LigneArticle;
 import com.toubasoft.ligneArticle.LigneArticleDTO;
+import com.toubasoft.stocks.Stocks;
+import com.toubasoft.stocks.StocksDAO;
 
 @Stateless
 public class VenteBusinessImpl implements VenteBusiness {
@@ -18,10 +21,21 @@ public class VenteBusinessImpl implements VenteBusiness {
 	@Inject
 	private VenteDAO venteDAO;
 
+	@Inject
+	private StocksDAO stocksDAO;
+
 	@Override
 	public Ventes create(Ventes vente) {
 		vente.setDateVente(new Date());
 		venteDAO.create(vente);
+
+		// Mise a jour du stock en retirant le nombre des articles vendus
+		vente.getLigneArticle().forEach(venteCurrent -> {
+			Stocks stocks = stocksDAO.findByArticle(venteCurrent.getReference());
+
+			stocks.setQuantiteReelle(stocks.getQuantite() - venteCurrent.getQuantite());
+			stocksDAO.update(stocks);
+		});
 		return vente;
 	}
 
@@ -50,6 +64,9 @@ public class VenteBusinessImpl implements VenteBusiness {
 		List<LigneArticleDTO> ligneArticleDTOs = new ArrayList<>();
 		for (Object[] objects : list) {
 			LigneArticleDTO ligneArticleDTO = new LigneArticleDTO();
+
+			BigInteger bigInteger = (BigInteger) objects[5];
+			ligneArticleDTO.setId(bigInteger.longValue());
 			ligneArticleDTO.setNom((String) objects[0]);
 			ligneArticleDTO.setReference((String) objects[1]);
 			ligneArticleDTO.setQuantite((Integer) objects[2]);
@@ -83,5 +100,44 @@ public class VenteBusinessImpl implements VenteBusiness {
 			}
 		}
 		return venteDTOs;
+	}
+
+	@Override
+	public void deleteLigneArticle(Long idVente, Long idLigne) {
+		venteDAO.deleteLigneArticle(idVente, idLigne);
+	}
+
+	@Override
+	public CaVenteDTO retrieveCaVentes() {
+		return venteDAO.caVente();
+	}
+
+	@Override
+	public List<DBArticleDTO> popularArticle() {
+		List<Object[]> ojects = venteDAO.popularArticle();
+		List<DBArticleDTO> dbArticleDTOs = new ArrayList<>();
+		if (!ojects.isEmpty()) {
+			for (Object[] object : ojects) {
+				DBArticleDTO dbArticleDTO = new DBArticleDTO();
+				BigInteger bigInteger = (BigInteger) object[0];
+				dbArticleDTO.setNbArticle(bigInteger.intValue());
+				dbArticleDTO.setNom((String) object[1]);
+
+				dbArticleDTOs.add(dbArticleDTO);
+
+			}
+		}
+		return dbArticleDTOs;
+	}
+	
+	@Override
+	public Integer caVenteEmploye(Long id) {
+		return venteDAO.caVenteEmploye(id);
+	}
+	
+	@Override
+	public TypeVenteDTO retrieveTypeVentes() {
+		// TODO Auto-generated method stub
+		return venteDAO.typeVente();
 	}
 }

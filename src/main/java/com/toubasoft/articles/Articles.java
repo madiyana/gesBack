@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import com.toubasoft.categories.Categories;
 import com.toubasoft.rayons.Rayon;
-import com.toubasoft.references.UniteMesure;
+import com.toubasoft.uniteMesure.UniteMesure;
 
 @Entity
 @Table(name = "Articles")
@@ -145,6 +145,7 @@ public class Articles {
 		this.marge = marge;
 	}
 
+	
 	public UniteMesure getUniteMesure() {
 		return uniteMesure;
 	}

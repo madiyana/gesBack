@@ -7,6 +7,8 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import com.toubasoft.dashboard.DBCommandeDTO;
+
 @Stateless
 public class CommandeBusinessImpl implements CommandeBusiness {
 
@@ -48,6 +50,10 @@ public class CommandeBusinessImpl implements CommandeBusiness {
 		return commandeDAO.findByState(status);
 	}
 
+	@Override
+	public DBCommandeDTO retrieveStatusCommandes() {
+		return commandeDAO.findStatus();
+	}
 	/************** PRIVATE METHOD *****/
 
 }

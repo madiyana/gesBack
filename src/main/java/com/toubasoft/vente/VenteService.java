@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -42,7 +43,8 @@ public class VenteService {
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(List<LigneArticle> ligneArticles, @QueryParam("encaissement") int encaissement,  @QueryParam("rendu") int rendu,
+	public Response create(List<LigneArticle> ligneArticles, @QueryParam("encaissement") int encaissement, @QueryParam("typePaiement") String typePaiement,
+			@QueryParam("rendu") int rendu,
 			 @QueryParam("montantTotal") Long montantTotal,  @QueryParam("idUser") Long idUser) {
 		Response.ResponseBuilder builder = null;
 		Map<String, String> response;
@@ -52,6 +54,7 @@ public class VenteService {
 			vente.setEncaissement(encaissement);
 			vente.setRendu(rendu);
 			vente.setMontantTotal(montantTotal);
+			vente.setTypePaiement(typePaiement);
 			vente.setEmploye(employeBusiness.retrieveEmployeById(idUser));
  			venteBusiness.create(vente);
 			return Response.ok(vente, MediaType.APPLICATION_JSON).build();
@@ -99,5 +102,36 @@ public class VenteService {
 		}
 		return Response.ok().entity(list).build();
 	}
+	
+	@DELETE
+	@Path("/deleteLigneArticleVente")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteRayons(@QueryParam("idVente") Long idVente, @QueryParam("idLigne") Long idLigne) {
+		Response.ResponseBuilder builder = null;
+		try {
+			venteBusiness.deleteLigneArticle(idVente, idLigne);
+			builder = Response.ok(true, MediaType.APPLICATION_JSON);
+		} catch (Exception e) {
+			
+			return Response.status(Response.Status.FORBIDDEN).entity("Erreur de suppression du rayon.").build();
+		}
+		return builder.build();
+	}
+	
+	
+	@GET
+	@Path("/caVenteEmploye")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response caVenteEmploye(@QueryParam("idEmploye") Long id) {
+		Integer caVente = venteBusiness.caVenteEmploye(id);
+		if (caVente == null) {
+			return Response.ok().status(Status.NO_CONTENT).build();
+		}
+		return Response.ok().entity(caVente).build();
+	}
+	
+	
+	
 
 }

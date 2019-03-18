@@ -35,6 +35,7 @@ public class ArticleDaoImpl implements ArticleDAO {
 	}
 
 	public List<Articles> findByName(String name) {
+		String sql = "";
 		TypedQuery<Articles> typedQuery = entityManager
 				.createQuery("select art from Articles art where upper(art.nom) = :name",
 						Articles.class)
@@ -56,11 +57,11 @@ public class ArticleDaoImpl implements ArticleDAO {
 	@Override
 	public Articles findByReference(String reference) {
 		TypedQuery<Articles> typedQuery = entityManager
-				.createQuery("select art from Articles art where art.reference = :reference",
+				.createQuery("select art from Articles art, Stocks sto where sto.articles.id = art.id and art.reference = :reference and sto.quantiteReelle > 0 order by sto.dateEntree ",
 						Articles.class)
 				.setParameter("reference", reference);
-
-		return typedQuery.getResultList().get(0);
+		
+		return !typedQuery.getResultList().isEmpty() ? typedQuery.getResultList().get(0) : null;
 	}
 
 }

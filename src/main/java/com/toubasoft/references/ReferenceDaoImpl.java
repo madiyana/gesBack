@@ -1,6 +1,5 @@
 package com.toubasoft.references;
 
-import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -12,12 +11,6 @@ public class ReferenceDaoImpl implements ReferenceDAO {
 
 	@PersistenceContext 
 	private EntityManager entityManager;
-
-	@Override
-	public List<UniteMesure> findAllUniteMesur() {
-		TypedQuery<UniteMesure> query = entityManager.createQuery("select uniteMesure from UniteMesure uniteMesure", UniteMesure.class);
-		return query.getResultList();
-	}
 
 	@Override
 	public double findTVA() {

@@ -29,7 +29,7 @@ public class EmployeService {
 
 	@Inject
 	private EmployeBusiness employeBusiness;
-	
+
 	@Inject
 	private UserTokenBusiness userTokenBusiness;
 
@@ -42,8 +42,8 @@ public class EmployeService {
 	 *
 	 * @param employes
 	 * @return
-	 * @
-	 * @throws Exception
+	 * @ @throws
+	 *       Exception
 	 */
 	@POST
 	@Path("/createEmployes")
@@ -74,8 +74,8 @@ public class EmployeService {
 	 *
 	 * @param employes
 	 * @return
-	 * @
-	 * @throws Exception
+	 * @ @throws
+	 *       Exception
 	 */
 	@PUT
 	@Path("/updateEmployes")
@@ -99,8 +99,8 @@ public class EmployeService {
 	 *
 	 * @param employes
 	 * @return
-	 * @
-	 * @throws Exception
+	 * @ @throws
+	 *       Exception
 	 */
 	@DELETE
 	@Path("/deleteEmployes")
@@ -170,13 +170,13 @@ public class EmployeService {
 
 	/**
 	 * Update password after first connexion from the values provided (employe)
-	 * Return a JAX-RS Response with 200 if it is OK, or with a Map of fields
-	 * and related error
+	 * Return a JAX-RS Response with 200 if it is OK, or with a Map of fields and
+	 * related error
 	 *
 	 * @param employes
 	 * @return
-	 * @
-	 * @throws Exception
+	 * @ @throws
+	 *       Exception
 	 */
 	@PUT
 	@Path("/updatePassword")
@@ -200,33 +200,38 @@ public class EmployeService {
 	 *
 	 * @param employes
 	 * @return
-	 * @
-	 * @throws Exception
+	 * @ @throws
+	 *       Exception
 	 */
 	@POST
 	@Path("/authenticate")
 	public Response authenticate(UserDTO userDTO) {
 		try {
 			// Vérifier si cet utilisateur est dejq connecté
-			if(userTokenBusiness.retrieveUserToken(userDTO.getIdentifiant()) != null) {
-				return Response.status(Response.Status.FORBIDDEN)
-						.entity("Erreur : Vous êtes déjà connecté avec ce compte.").build();
-			} else {
-				Map<String, Employes> mapEmployeToken = employeBusiness.authenticate(userDTO.getIdentifiant(), userDTO.getMotDePasse());
-				if (mapEmployeToken.containsKey("ERROR_ID_PWD")) {
-					return Response.status(Response.Status.FORBIDDEN)
-							.entity("Erreur : Identifiant ou mot de passe incorrect.").build();
-				} else if (mapEmployeToken.containsKey("NOT_ACTIF")) {
-					return Response.status(Response.Status.FORBIDDEN)
-							.entity("Erreur : Votre compte n'est pas activé. Veuillez contater l'administrateur.").build();
-				}
-				return Response.ok(mapEmployeToken, MediaType.APPLICATION_JSON).build();
+			/*
+			 * if(userTokenBusiness.retrieveUserToken(userDTO.getIdentifiant()) != null) {
+			 * return Response.status(Response.Status.FORBIDDEN)
+			 * .entity("Erreur : Vous êtes déjà connecté avec ce compte.").build(); } else {
+			 */
+			if (userTokenBusiness.retrieveUserToken(userDTO.getIdentifiant()) != null) {
+				userTokenBusiness.deleteUserToken(userDTO.getIdentifiant());
 			}
+			Map<String, Employes> mapEmployeToken = employeBusiness.authenticate(userDTO.getIdentifiant(),
+					userDTO.getMotDePasse());
+			if (mapEmployeToken.containsKey("ERROR_ID_PWD")) {
+				return Response.status(Response.Status.FORBIDDEN)
+						.entity("Erreur : Identifiant ou mot de passe incorrect.").build();
+			} else if (mapEmployeToken.containsKey("NOT_ACTIF")) {
+				return Response.status(Response.Status.FORBIDDEN)
+						.entity("Erreur : Votre compte n'est pas activé. Veuillez contater l'administrateur.").build();
+			}
+			return Response.ok(mapEmployeToken, MediaType.APPLICATION_JSON).build();
+			// }
 		} catch (PersistenceException e) {
 			return Response.status(Response.Status.FORBIDDEN).entity("Erreur technique").build();
 		}
 	}
-	
+
 	@POST
 	@Path("/logout")
 	public void logout(Employes employes) {

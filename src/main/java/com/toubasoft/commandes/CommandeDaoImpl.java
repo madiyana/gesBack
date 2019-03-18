@@ -1,11 +1,15 @@
 package com.toubasoft.commandes;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+
+import com.toubasoft.dashboard.DBCommandeDTO;
 
 @Stateless
 public class CommandeDaoImpl implements CommandeDAO {
@@ -47,6 +51,34 @@ public class CommandeDaoImpl implements CommandeDAO {
 						Commandes.class)
 				.setParameter("etatCommande", etat);
 		return query.getResultList();
+	}
+	
+	@Override
+	public DBCommandeDTO findStatus() {
+		DBCommandeDTO dbCommandeDTO = new DBCommandeDTO();
+		Query query = null;
+		
+		String sqlRecu = "select count(*) from commandes com where com.etat_commande = :etatCommande";
+		query = entityManager.createNativeQuery(sqlRecu);
+		query.setParameter("etatCommande", EtatCommande.RECEPT.getLabel());
+		dbCommandeDTO.setNbRecu(((BigInteger) query.getSingleResult()).intValue());
+		
+		String sqlEnvoye = "select count(*) from commandes com where com.etat_commande = :etatCommande";
+		query = entityManager.createNativeQuery(sqlEnvoye);
+		query.setParameter("etatCommande", EtatCommande.ENVOYE.getLabel());
+		dbCommandeDTO.setNbEnvoye(((BigInteger) query.getSingleResult()).intValue());
+		
+		String sqlAnnule = "select count(*) from commandes com where com.etat_commande = :etatCommande";
+		query = entityManager.createNativeQuery(sqlAnnule);
+		query.setParameter("etatCommande", EtatCommande.ANNULE.getLabel());
+		dbCommandeDTO.setNbAnnule(((BigInteger) query.getSingleResult()).intValue());
+		
+		String sqlEnCours = "select count(*) from commandes com where com.etat_commande = :etatCommande";
+		query = entityManager.createNativeQuery(sqlEnCours);
+		query.setParameter("etatCommande", EtatCommande.EN_COURS.getLabel());
+		dbCommandeDTO.setNbEnCours(((BigInteger) query.getSingleResult()).intValue());
+	
+		return dbCommandeDTO;
 	}
 
 }

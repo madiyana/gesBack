@@ -2,6 +2,8 @@ package com.toubasoft.commandes;
 
 import java.util.List;
 
+import com.toubasoft.dashboard.DBCommandeDTO;
+
 public interface CommandeDAO {
 
 	/**
@@ -50,4 +52,6 @@ public interface CommandeDAO {
 	 * @return List of articles
 	 */
 	public List<Commandes> findAll();
+
+	public DBCommandeDTO findStatus();
 }

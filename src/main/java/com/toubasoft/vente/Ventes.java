@@ -53,6 +53,9 @@ public class Ventes {
 	@Column(name = "MONTANT_TOTAL")
 	private Long montantTotal;
 
+	@Column(name = "TYPE_PAIEMENT")
+	private String typePaiement;
+	
 	public Long getId() {
 		return id;
 	}
@@ -107,6 +110,14 @@ public class Ventes {
 
 	public void setDateVente(Date dateVente) {
 		this.dateVente = dateVente;
+	}
+
+	public String getTypePaiement() {
+		return typePaiement;
+	}
+
+	public void setTypePaiement(String typePaiement) {
+		this.typePaiement = typePaiement;
 	}
 
 	/** CONVERT ENTITY TO DTO **/

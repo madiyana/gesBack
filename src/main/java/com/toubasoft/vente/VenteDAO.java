@@ -22,5 +22,15 @@ public interface VenteDAO {
 
 	public List<Object[]> findVenteCritere(String dateDebut, String dateFin);
 
+	public void deleteLigneArticle(Long idVente, Long idLigne);
+
+	public CaVenteDTO caVente();
+
+	public List<Object[]> popularArticle();
+
+	public Integer caVenteEmploye(Long id);
+
+	public TypeVenteDTO typeVente();
+
 	
 }

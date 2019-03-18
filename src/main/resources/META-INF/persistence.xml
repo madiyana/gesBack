@@ -15,11 +15,12 @@
 		<class>com.toubasoft.rayons.Rayon</class>
 		<class>com.toubasoft.articlesCommande.ArticlesCommande</class> 
 		<class>com.toubasoft.stocks.Stocks</class>
-		<class>com.toubasoft.references.UniteMesure</class>
 		<class>com.toubasoft.references.ValeurTVA</class>
 		<class>com.toubasoft.userToken.UsersToken</class>
 		<class>com.toubasoft.vente.Ventes</class>
 		<class>com.toubasoft.ligneArticle.LigneArticle</class>
+		<class>com.toubasoft.uniteMesure.UniteMesure</class>
+		<class>com.toubasoft.articlesretour.ArticlesRetour</class>
 		 
 		<properties>
 			<!-- Properties for Hibernate -->    

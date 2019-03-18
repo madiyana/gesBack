@@ -45,4 +45,7 @@ public interface StocksDAO {
 
 
 	public List<RuptureStockDTO> findRuptureStock();
+
+
+	public Stocks findByArticle(String reference);
 }

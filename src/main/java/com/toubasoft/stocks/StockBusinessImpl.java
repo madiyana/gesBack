@@ -65,4 +65,10 @@ public class StockBusinessImpl implements StocksBusiness {
 			stocksDAO.create(stocks);
 		}
 	}
+	
+	
+	@Override
+	public Stocks retrieveStockArticle(String reference) {
+		return stocksDAO.findByArticle(reference);
+	}
 }

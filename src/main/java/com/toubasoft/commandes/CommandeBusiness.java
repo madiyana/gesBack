@@ -2,6 +2,8 @@ package com.toubasoft.commandes;
 
 import java.util.List;
 
+import com.toubasoft.dashboard.DBCommandeDTO;
+
 public interface CommandeBusiness {
 
 	/**
@@ -52,4 +54,6 @@ public interface CommandeBusiness {
 	public Commandes retrieveCommandeById(Long id);
 
 	public List<Commandes> retrieveCommandesStatus(String status);
+
+	public DBCommandeDTO retrieveStatusCommandes();
 }

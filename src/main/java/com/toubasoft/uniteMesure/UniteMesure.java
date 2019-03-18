@@ -1,4 +1,4 @@
-package com.toubasoft.references;
+package com.toubasoft.uniteMesure;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "UniteMesure")
@@ -56,6 +57,15 @@ public class UniteMesure {
 
 	public void setActif(boolean actif) {
 		this.actif = actif;
+	}
+
+	public UniteMesureDTO convertEntityToDTO() {
+		UniteMesureDTO uniteMesureDTO = new UniteMesureDTO();
+		uniteMesureDTO.setId(id);
+		uniteMesureDTO.setNom(nom);
+		uniteMesureDTO.setCodeUnite(codeUnite);
+		uniteMesureDTO.setActif(actif);
+		return uniteMesureDTO;
 	}
 
 	

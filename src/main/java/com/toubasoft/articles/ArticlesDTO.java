@@ -2,7 +2,7 @@ package com.toubasoft.articles;
 
 import com.toubasoft.categories.Categories;
 import com.toubasoft.rayons.Rayon;
-import com.toubasoft.references.UniteMesure;
+import com.toubasoft.uniteMesure.UniteMesure;
 
 public class ArticlesDTO {
 

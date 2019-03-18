@@ -63,13 +63,12 @@ public class EmployeBusinessImpl implements EmployeBusiness {
 		if (employesConnect == null) {
 			employeToken.put("ERROR_ID_PWD", employesConnect);
 		} else {
+			long millis = System.currentTimeMillis();
+			String token = issueToken(username + password + millis);
+			employeToken.put(token, employesConnect);
 			if (!employesConnect.isActif()) {
 				employeToken.put("NOT_ACTIF", employesConnect);
-				;
-			} else {
-				long millis = System.currentTimeMillis();
-				String token = issueToken(username + password + millis);
-				employeToken.put(token, employesConnect);
+			} else if(!employesConnect.isPremConnexion()){
 				// mise a jour table user_token
 				UsersToken usersToken = new UsersToken();
 				usersToken.setIdentifiant(employesConnect.getIdentifiant());

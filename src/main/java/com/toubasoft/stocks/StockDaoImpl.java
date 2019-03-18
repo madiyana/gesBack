@@ -2,7 +2,6 @@ package com.toubasoft.stocks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -66,58 +65,15 @@ public class StockDaoImpl implements StocksDAO {
 			ruptureStockDTO.setDateEntree((String) objects[4]);
 
 			ruptureStockDTOs.add(ruptureStockDTO);
-
 		}
-
-		// updateEntities(lists, null);
 
 		return ruptureStockDTOs;
 	}
-
-	public Consumer<RuptureStockDTO> consumeStock(Object[] object) {
-		return entity -> {
-			entity.setNomArticle((String) object[0]);
-			entity.setReference((String) object[1]);
-			entity.setNomCategorie((String) object[2]);
-			entity.setDateEntree("bonjour");
-		};
+	
+	@Override
+	public Stocks findByArticle(String reference) {
+		TypedQuery<Stocks> query = entityManager.createQuery("select c from Stocks c where c.articles.reference = :reference order by c.dateEntree", Stocks.class);
+		query.setParameter("reference", reference);
+		return query.getResultList().get(0);
 	}
-
-	private <T extends RuptureStockDTO> void updateEntities(List<Object[]> entities, T[] obj) {
-		entities.forEach(en -> consumeStock(en));
-	}
-
-	// private <T extends EntityCCPD> List<T>
-	// copyAndUpdateEntitiesFromRequest(List<T> entities, String delegation,
-	// BaseStatus baseStatus) {
-	// List<T> entitiesCloned =
-	// cloneEntityBusinessImpl.cloneForNewResponseOfRequest(entities);
-	// updateEntities(entitiesCloned, delegation, baseStatus);
-	// return entitiesCloned;
-	//
-	// }
-	//
-	// private <T extends EntityCCPD> void updateEntities(List<T> entities, String
-	// delegation, BaseStatus baseStatus) {
-	// entities.forEach(updateEntity(delegation, baseStatus));
-	// }
-	//
-	// private Consumer<EntityCCPD> updateEntity(String delegation, BaseStatus
-	// baseStatus) {
-	// return entity -> {
-	// entity.setFromRequest(false);
-	// entity.setNationalBasesStatus(createNationalBasesStatus(getType(entity),
-	// delegation, baseStatus));
-	// };
-	// }
-
-	// private Consumer<EntityCCPD> updateEntity(String delegation, BaseStatus
-	// baseStatus) {
-	// return entity -> {
-	// entity.setFromRequest(false);
-	// entity.setNationalBasesStatus(createNationalBasesStatus(getType(entity),
-	// delegation, baseStatus));
-	// };
-	// }
-
 }
